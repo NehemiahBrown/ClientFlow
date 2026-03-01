@@ -11,7 +11,7 @@ const appointments = [
     name: "Javier Sanchez",
     phone: "(773) 892-1233",
     dateTime: "2026-03-07T13:30:00",
-    status: "cancelled",
+    status: "canceled",
   },
   {
     id: 3,
@@ -41,17 +41,30 @@ const apptCardContainer = document.getElementById("appointmentCardsCont");
 const statuses = [
   {
     text: "Scheduled",
-    value: "Scheduled",
+    value: "scheduled",
   },
   {
     text: "Completed",
-    value: "Completed",
+    value: "completed",
   },
   {
     text: "Canceled",
-    value: "Canceled",
+    value: "canceled",
   },
 ];
+
+const statusColor = function statusColor(options) {
+  const color =
+    options.value == "scheduled"
+      ? (options.style.background = "#5f9ea0")
+      : options.value == "completed"
+        ? (options.style.background = "#5faf8e")
+        : options.value == "canceled"
+          ? (options.style.background = "#c76a6a")
+          : (options.style.background = "#000");
+
+  return color;
+};
 
 const createCard = function createCard(appointment) {
   const apptCard = document.createElement("div");
@@ -60,26 +73,27 @@ const createCard = function createCard(appointment) {
   const name = document.createElement("p");
   const phone = document.createElement("p");
   const dateTime = document.createElement("p");
-  const statusLabel = document.createElement("label");
   const statusOptions = document.createElement("select");
 
   name.classList.add("apptName");
   phone.classList.add("apptPhone");
   dateTime.classList.add("apptDateTime");
-  statusLabel.classList.add("statusLabel");
+  statusOptions.classList.add("statusOptionsAppt");
 
   name.innerText = appointment.name;
   phone.innerText = appointment.phone;
   dateTime.innerText = appointment.dateTime;
-  statusLabel.innerText = "Status";
-  statusOptions.value = appointment.status;
-
   statuses.forEach((status) =>
     statusOptions.add(new Option(status.text, status.value)),
   );
+  statusOptions.value = appointment.status;
 
-  apptCard.append(name, phone, dateTime, statusLabel, statusOptions);
+  apptCard.append(name, phone, dateTime, statusOptions);
 
+  statusColor(statusOptions);
+  statusOptions.addEventListener("change", () => {
+    statusColor(statusOptions);
+  });
   return apptCard;
 };
 

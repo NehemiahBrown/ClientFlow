@@ -17,6 +17,7 @@
 
 body {
   background-color: var(--background-color);
+  font-family: "Roboto", sans-serif;
 }
 
 /* header */
@@ -65,5 +66,36 @@ body {
 }
 
 .appointmentCard {
-  border: solid 1px var(--accent-color);
+  border: solid 2px var(--accent-color);
+  padding: 10px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  border-radius: 20px;
+  box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.6);
+}
+
+.apptName {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.statusOptionsAppt {
+  border: none;
+  width: 120px;
+  padding: 10px;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--text-color);
+  margin: 7px 0px;
+}
+
+.statusOptionsAppt:focus {
+  outline: none;
+}
+
+.statusOptionsAppt option {
+  background-color: white;
+  border-radius: 10px;
 }
