@@ -99,3 +99,76 @@ body {
   background-color: white;
   border-radius: 10px;
 }
+
+/* popup add appointment form */
+#formContainer {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: none;
+  place-items: center;
+}
+
+#addApptForm {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--appt-summaries);
+  border: solid 6px var(--accent-color);
+  box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.6);
+  padding: 20px 20px 70px 20px;
+  width: 350px;
+  border-radius: 18px;
+}
+
+.closeApptBtn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  display: inline-flex;
+  padding: 2.5px 5px;
+
+  font-weight: bold;
+  font-size: 20px;
+
+  background: none;
+  border: 1px solid var(--primary-color);
+  border-radius: 6px;
+
+  cursor: pointer;
+}
+
+#addApptForm h1 {
+  margin-bottom: 50px;
+}
+
+#addApptForm label {
+  font-weight: 600;
+  margin: 20px 0px 10px 0px;
+}
+
+#formContainer.showForm {
+  display: grid;
+}
+
+#addApptForm input {
+  width: 250px;
+  height: 30px;
+  padding-left: 4px;
+}
+
+#addApptForm input:focus {
+  outline: none;
+  border: 2px solid var(--primary-color);
+  border-radius: 4px;
+  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6);
+}
+
+#submitApptBtn {
+  position: absolute;
+  width: 100px;
+  height: 30px;
+  bottom: 15px;
+  right: 20px;
+  display: block;
+}
