@@ -30,7 +30,7 @@
             aria-label="Search appointments"
             placeholder="Search Appointments"
           />
-          <button>Add Appointment</button>
+          <button id="addApptBtn">Add Appointment</button>
         </div>
       </div>
     </header>
@@ -47,6 +47,31 @@
       </section>
       <section id="appointmentCardsCont"></section>
     </main>
+
+    <div class="form-popup hideForm" id="formContainer">
+      <form id="addApptForm">
+        <button class="closeApptBtn">X</button>
+        <h1>Add Appointment</h1>
+
+        <label for="name">Full Name</label>
+        <input
+          type="text"
+          id="name"
+          placeholder="Enter Full Name"
+          name="name"
+          required
+        />
+
+        <label for="phone">Phone</label>
+        <input type="text" id="phone" placeholder="Enter Phone" name="phone" />
+
+        <label for="dateTime">Scheduled Time</label>
+        <input type="datetime-local" id="dateTime" name="dateTime" required />
+
+        <button type="submit" id="submitApptBtn">SUBMIT</button>
+      </form>
+    </div>
+
     <script src="index.js" defer></script>
   </body>
 </html>

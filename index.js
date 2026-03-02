@@ -1,43 +1,12 @@
 const appointments = [
-  {
-    id: 1,
-    name: "Nehemiah Brown",
-    phone: "(618) 892-2929",
-    dateTime: "2026-02-28T10:00:00",
-    status: "scheduled",
-  },
-  {
-    id: 2,
-    name: "Javier Sanchez",
-    phone: "(773) 892-1233",
-    dateTime: "2026-03-07T13:30:00",
-    status: "canceled",
-  },
-  {
-    id: 3,
-    name: "Arielle Dupoint",
-    phone: "(312) 243-9032",
-    dateTime: "2026-03-12T18:30:00",
-    status: "scheduled",
-  },
-  {
-    id: 4,
-    name: "Ryan Parra",
-    phone: "(618) 892-2929",
-    dateTime: "2026-02-15T15:00:00",
-    status: "scheduled",
-  },
-  {
-    id: 5,
-    name: "Pierre Alonso",
-    phone: "(618) 892-2929",
-    dateTime: "2026-02-10T12:00:00",
-    status: "completed",
-  },
+  // {
+  //   id: 1,
+  //   name: "Nehemiah Brown",
+  //   phone: "(618) 892-2929",
+  //   dateTime: "2026-02-28T10:00:00",
+  //   status: "scheduled",
+  // },
 ];
-
-const apptCardContainer = document.getElementById("appointmentCardsCont");
-
 const statuses = [
   {
     text: "Scheduled",
@@ -52,6 +21,23 @@ const statuses = [
     value: "canceled",
   },
 ];
+
+const apptCardContainer = document.getElementById("appointmentCardsCont");
+const addApptBtn = document.getElementById("addApptBtn");
+const closeApptBtn = document.querySelector(".closeApptBtn");
+
+const myForm = document.getElementById("formContainer");
+const apptForm = document.getElementById("addApptForm");
+
+const submitApptBtn = document.getElementById("submitApptBtn");
+
+addApptBtn.addEventListener("click", () => {
+  myForm.classList.add("showForm");
+});
+
+closeApptBtn.addEventListener("click", () => {
+  myForm.classList.remove("showForm");
+});
 
 const statusColor = function statusColor(options) {
   const color =
@@ -100,4 +86,22 @@ const createCard = function createCard(appointment) {
 // apptCardContainer.append(createCard(appointments));
 appointments.forEach((appt) => {
   apptCardContainer.append(createCard(appt));
+});
+
+const addAppointment = function (form) {
+  const appointment = new FormData(form);
+
+  return {
+    id: crypto.randomUUID(),
+    name: appointment.get("name")?.trim(),
+    phone: appointment.get("phone")?.trim() ?? "",
+    dateTime: appointment.get("dateTime"),
+    status: "scheduled",
+  };
+};
+
+apptForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+  appointments.push(addAppointment(e.target));
+  apptCardContainer.append(createCard());
 });
