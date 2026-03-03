@@ -1,12 +1,5 @@
-const appointments = [
-  // {
-  //   id: 1,
-  //   name: "Nehemiah Brown",
-  //   phone: "(618) 892-2929",
-  //   dateTime: "2026-02-28T10:00:00",
-  //   status: "scheduled",
-  // },
-];
+let appointments = [];
+
 const statuses = [
   {
     text: "Scheduled",
@@ -21,6 +14,8 @@ const statuses = [
     value: "canceled",
   },
 ];
+
+let savedAppointments = JSON.parse(localStorage.getItem("appointments"));
 
 const apptCardContainer = document.getElementById("appointmentCardsCont");
 const addApptBtn = document.getElementById("addApptBtn");
@@ -74,7 +69,10 @@ const createCard = function createCard(appointment) {
   );
   statusOptions.value = appointment.status;
 
-  apptCard.append(name, phone, dateTime, statusOptions);
+  const date = new Date(appointment.dateTime);
+  const formattedDated = date.toLocaleString("en-US");
+
+  apptCard.append(name, phone, formattedDated, statusOptions);
 
   statusColor(statusOptions);
   statusOptions.addEventListener("change", () => {
@@ -83,11 +81,22 @@ const createCard = function createCard(appointment) {
   return apptCard;
 };
 
-// apptCardContainer.append(createCard(appointments));
+const renderAppointments = function () {
+  for (let i = 0; i < appointments.length; i++) {
+    createCard([appointments[i]]);
+  }
+};
+
+if (savedAppointments) {
+  appointments = savedAppointments;
+  renderAppointments();
+}
+
 appointments.forEach((appt) => {
   apptCardContainer.append(createCard(appt));
 });
 
+// rendering created appointments from form
 const addAppointment = function (form) {
   const appointment = new FormData(form);
 
@@ -102,6 +111,8 @@ const addAppointment = function (form) {
 
 apptForm.addEventListener("submit", (e) => {
   e.preventDefault();
-  appointments.push(addAppointment(e.target));
-  apptCardContainer.append(createCard());
+  const newAppointment = addAppointment(e.target);
+  appointments.push(newAppointment);
+  localStorage.setItem("appointments", JSON.stringify(appointments));
+  apptCardContainer.append(createCard(newAppointment));
 });
