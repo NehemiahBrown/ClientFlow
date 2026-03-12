@@ -14,24 +14,26 @@ const statuses = [
     value: "canceled",
   },
 ];
-
+// local storage
 let savedAppointments = JSON.parse(localStorage.getItem("appointments"));
 
+// Variables for DOM elements
 const apptCardContainer = document.getElementById("appointmentCardsCont");
 const addApptBtn = document.getElementById("addApptBtn");
 const closeApptBtn = document.querySelector(".closeApptBtn");
 
-const myForm = document.getElementById("formContainer");
+const apptFormCont = document.getElementById("formContainer");
 const apptForm = document.getElementById("addApptForm");
 
 const submitApptBtn = document.getElementById("submitApptBtn");
 
+// showing and hiding form
 addApptBtn.addEventListener("click", () => {
-  myForm.classList.add("showForm");
+  apptFormCont.classList.add("showForm");
 });
 
 closeApptBtn.addEventListener("click", () => {
-  myForm.classList.remove("showForm");
+  apptFormCont.classList.remove("showForm");
 });
 
 const statusColor = function statusColor(options) {
@@ -47,6 +49,7 @@ const statusColor = function statusColor(options) {
   return color;
 };
 
+//creating appointment cards
 const createCard = function createCard(appointment) {
   const apptCard = document.createElement("div");
   apptCard.classList.add("appointmentCard");
@@ -81,6 +84,7 @@ const createCard = function createCard(appointment) {
   return apptCard;
 };
 
+// rendering appointments from local storage
 const renderAppointments = function () {
   for (let i = 0; i < appointments.length; i++) {
     createCard([appointments[i]]);
@@ -96,7 +100,7 @@ appointments.forEach((appt) => {
   apptCardContainer.append(createCard(appt));
 });
 
-// rendering created appointments from form
+// adding new appointment to the array and local storage
 const addAppointment = function (form) {
   const appointment = new FormData(form);
 
@@ -109,10 +113,51 @@ const addAppointment = function (form) {
   };
 };
 
+// form validation
+const validateForm = function (form) {
+  let isValid = true;
+  const nameError = form.querySelector(".fullNameCont");
+  const phoneError = form.querySelector(".phoneCont");
+  const dateTimeError = form.querySelector(".dateTimeCont");
+
+  const name = form.elements["name"].value.trim();
+  const phone = form.elements["phone"].value.trim();
+  const dateTime = form.elements["dateTime"].value;
+
+  const phonePattern = /^\d{10}$/;
+
+  const phoneValid = phonePattern.test(phone);
+  console.log(nameError);
+  console.log(phoneError);
+
+  if (name === "") {
+    nameError.querySelector(".nameErrorMsg").classList.add("showError");
+    isValid = false;
+  } else {
+    nameError.querySelector(".nameErrorMsg").classList.remove("showError");
+  }
+
+  if (!phoneValid) {
+    phoneError.querySelector(".phoneErrorMsg").classList.add("showError");
+    isValid = false;
+  } else {
+    phoneError.querySelector(".phoneErrorMsg").classList.remove("showError");
+  }
+
+  return isValid;
+};
+
 apptForm.addEventListener("submit", (e) => {
   e.preventDefault();
-  const newAppointment = addAppointment(e.target);
-  appointments.push(newAppointment);
-  localStorage.setItem("appointments", JSON.stringify(appointments));
-  apptCardContainer.append(createCard(newAppointment));
+  if (!validateForm(e.target)) {
+    console.log("validation failed");
+    return;
+  } else {
+    const newAppointment = addAppointment(e.target);
+    e.target.reset();
+    appointments.push(newAppointment);
+    apptFormCont.style.display = "none";
+    localStorage.setItem("appointments", JSON.stringify(appointments));
+    apptCardContainer.append(createCard(newAppointment));
+  }
 });
