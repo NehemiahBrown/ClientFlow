@@ -139,12 +139,20 @@ body {
 }
 
 #addApptForm h1 {
-  margin-bottom: 50px;
+  margin-bottom: 40px;
 }
 
-#addApptForm label {
+#addApptForm,
+div,
+label {
   font-weight: 600;
   margin: 20px 0px 10px 0px;
+}
+
+#addApptForm,
+div,
+input {
+  margin: 5px 0px;
 }
 
 #formContainer.showForm {
@@ -171,4 +179,15 @@ body {
   bottom: 15px;
   right: 20px;
   display: block;
+}
+
+.phoneErrorMsg,
+.nameErrorMsg {
+  display: none;
+}
+
+.showError {
+  display: block;
+  color: var(--canceled);
+  font-size: 16px;
 }

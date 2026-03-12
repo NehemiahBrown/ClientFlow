@@ -48,26 +48,29 @@
       <section id="appointmentCardsCont"></section>
     </main>
 
-    <div class="form-popup hideForm" id="formContainer">
+    <div class="form-popup" id="formContainer">
       <form id="addApptForm">
         <button class="closeApptBtn" type="button">X</button>
         <h1>Add Appointment</h1>
-
-        <label for="name">Full Name</label>
-        <input
-          type="text"
-          id="name"
-          placeholder="Enter Full Name"
-          name="name"
-          required
-        />
-
-        <label for="phone">Phone</label>
-        <input type="text" id="phone" placeholder="Enter Phone" name="phone" />
-
-        <label for="dateTime">Scheduled Time</label>
-        <input type="datetime-local" id="dateTime" name="dateTime" required />
-
+        <div class="fullNameCont">
+          <label for="name">Full Name</label>
+          <input
+            type="text"
+            id="name"
+            placeholder="Enter Full Name"
+            name="name"
+          />
+          <p class="nameErrorMsg">Please enter your full name.</p>
+        </div>
+        <div class="phoneCont">
+          <label for="phone">Phone</label>
+          <input type="tel" id="phone" placeholder="Enter Phone" name="phone" />
+          <p class="phoneErrorMsg">Please enter a valid phone number.</p>
+        </div>
+        <div class="dateTimeCont">
+          <label for="dateTime">Scheduled Time</label>
+          <input type="datetime-local" id="dateTime" name="dateTime" required />
+        </div>
         <button type="submit" id="submitApptBtn">SUBMIT</button>
       </form>
     </div>
