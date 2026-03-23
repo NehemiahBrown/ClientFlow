@@ -32,11 +32,11 @@ let editingApptId = null;
 const statusColor = function statusColor(options) {
   const color =
     options.value == "scheduled"
-      ? (options.style.background = "#5f9ea0")
+      ? (options.style.background = "rgba(74, 144, 226, 0.14)")
       : options.value == "completed"
-        ? (options.style.background = "#5faf8e")
+        ? (options.style.background = "rgba(47, 158, 114, 0.14)")
         : options.value == "canceled"
-          ? (options.style.background = "#c76a6a")
+          ? (options.style.background = "rgba(217, 92, 92, 0.14)")
           : (options.style.background = "#000");
 
   return color;
@@ -58,6 +58,7 @@ function formatPhone(phone) {
 const createCard = function createCard(appointment) {
   const apptCard = document.createElement("div");
   const cardHeader = document.createElement("div");
+  const cardBtns = document.createElement("div");
   apptCard.classList.add("appointmentCard");
   const date = new Date(appointment.dateTime);
   const formattedDated = date.toLocaleString("en-US");
@@ -71,6 +72,7 @@ const createCard = function createCard(appointment) {
   const statusOptions = document.createElement("select");
 
   cardHeader.classList.add("card-header");
+  cardBtns.classList.add("card-btns");
   name.classList.add("apptName");
   phone.classList.add("apptPhone");
   dateTime.classList.add("apptDateTime");
@@ -93,8 +95,9 @@ const createCard = function createCard(appointment) {
   <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
 </svg>`;
 
-  cardHeader.append(name, deleteBtn, editBtn);
   apptCard.append(cardHeader, dateTime, phone, statusOptions);
+  cardHeader.append(name, cardBtns);
+  cardBtns.append(editBtn, deleteBtn);
 
   statusColor(statusOptions);
   statusOptions.addEventListener("change", () => {
