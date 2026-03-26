@@ -28,6 +28,12 @@ let savedAppointments = JSON.parse(localStorage.getItem("appointments"));
 
 let editingApptId = null;
 
+//filter buttons
+const todayApptTracker = document.getElementById("todayApptTracker");
+const allApptTracker = document.getElementById("allApptTracker");
+const upcomingApptTracker = document.getElementById("upcomingApptTracker");
+const completedApptTracker = document.getElementById("completedApptTracker");
+
 // utility functions
 const statusColor = function statusColor(options) {
   const color =
@@ -106,12 +112,37 @@ const createCard = function createCard(appointment) {
   return apptCard;
 };
 
-const renderAppointments = function () {
+const renderAppointments = function (appointmentArray) {
   apptCardContainer.innerHTML = "";
-  appointments.forEach((appt) => {
+  appointmentArray.forEach((appt) => {
     apptCardContainer.append(createCard(appt));
   });
 };
+
+//Filter Card Functions
+function todaysAppointments() {
+  const today = new Date().toLocaleDateString("en-US");
+  return appointments.filter((appointment) => {
+    return new Date(appointment.dateTime).toLocaleDateString("en-US") === today;
+  });
+}
+
+function upcomingAppointments() {
+  const today = new Date();
+  return appointments.filter((appointment) => {
+    return new Date(appointment.dateTime) > today;
+  });
+}
+
+function allAppointments() {
+  return appointments;
+}
+
+function completedAppointments() {
+  return appointments.filter((appointment) => {
+    return appointment.status === "completed";
+  });
+}
 
 // Form Logic
 const createAppointment = function (form) {
@@ -179,7 +210,7 @@ apptForm.addEventListener("submit", (e) => {
     const newAppointment = createAppointment(e.target);
     appointments.push(newAppointment);
     localStorage.setItem("appointments", JSON.stringify(appointments));
-    renderAppointments();
+    renderAppointments(appointments);
     e.target.reset();
     apptFormCont.classList.remove("showForm");
   } else {
@@ -194,7 +225,7 @@ apptForm.addEventListener("submit", (e) => {
     editedAppointment.dateTime = e.target.elements["dateTime"].value;
 
     localStorage.setItem("appointments", JSON.stringify(appointments));
-    renderAppointments();
+    renderAppointments(appointments);
     e.target.reset();
     apptFormCont.classList.remove("showForm");
     editingApptId = null;
@@ -209,7 +240,7 @@ apptCardContainer.addEventListener("click", (e) => {
     const card = deleteBtn.closest(".appointmentCard");
     appointments = appointments.filter((appt) => appt.id !== card.dataset.id);
     localStorage.setItem("appointments", JSON.stringify(appointments));
-    renderAppointments();
+    renderAppointments(appointments);
   } else if (editBtn) {
     const card = editBtn.closest(".appointmentCard");
     const id = card.dataset.id;
@@ -228,5 +259,24 @@ apptCardContainer.addEventListener("click", (e) => {
 // Initialization
 if (savedAppointments) {
   appointments = savedAppointments;
-  renderAppointments();
+  renderAppointments(appointments);
 }
+
+todayApptTracker.addEventListener("click", () => {
+  const filteredAppointments = todaysAppointments();
+  renderAppointments(filteredAppointments);
+});
+
+allApptTracker.addEventListener("click", () => {
+  renderAppointments(appointments);
+});
+
+upcomingApptTracker.addEventListener("click", () => {
+  const filteredAppointments = upcomingAppointments();
+  renderAppointments(filteredAppointments);
+});
+
+completedApptTracker.addEventListener("click", () => {
+  const filteredAppointments = completedAppointments();
+  renderAppointments(filteredAppointments);
+});
