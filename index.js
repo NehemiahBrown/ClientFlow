@@ -22,7 +22,8 @@ const closeApptBtn = document.querySelector(".closeApptBtn");
 
 const apptFormCont = document.getElementById("formContainer");
 const apptForm = document.getElementById("addApptForm");
-const searchBar = getElementById("search");
+const searchBar = document.getElementById("searchBar");
+const noMatchingAppts = document.getElementById("noMatchingAppts");
 
 // local storage
 let savedAppointments = JSON.parse(localStorage.getItem("appointments"));
@@ -119,9 +120,16 @@ const createCard = function createCard(appointment) {
 
 const renderAppointments = function (appointmentArray) {
   apptCardContainer.innerHTML = "";
-  appointmentArray.forEach((appt) => {
-    apptCardContainer.append(createCard(appt));
-  });
+  if (appointmentArray.length > 0) {
+    appointmentArray.forEach((appt) => {
+      apptCardContainer.append(createCard(appt));
+    });
+  } else {
+    const noMatchingApptsMessage = document.createElement("p");
+    noMatchingApptsMessage.classList.add("noMatchingApptsMessage");
+    noMatchingApptsMessage.textContent = "NO MATCHING APPOINTMENTS";
+    apptCardContainer.appendChild(noMatchingApptsMessage);
+  }
 };
 
 function todaysAppointments() {
@@ -210,6 +218,23 @@ const validateForm = function (form) {
 };
 
 // Event Listeners
+
+searchBar.addEventListener("input", function () {
+  const inputValue = this.value.trim().toLowerCase();
+  const filteredArray = appointments.filter((appointment) => {
+    return appointment.name.toLowerCase().includes(inputValue);
+  });
+  if (inputValue === "") {
+    renderAppointments(appointments);
+    noMatchingAppts.style.display = "none";
+  } else if (filteredArray.length > 0) {
+    renderAppointments(filteredArray);
+    noMatchingAppts.style.display = "none";
+  } else {
+    apptCardContainer.innerHTML = "";
+    renderAppointments(filteredArray);
+  }
+});
 
 addApptBtn.addEventListener("click", () => {
   editingApptId = null;
