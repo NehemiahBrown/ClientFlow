@@ -334,6 +334,9 @@ if (savedAppointments) {
 renderAppointments(appointments);
 updateCardFilterCount();
 
+renderAppointments(appointments);
+updateCardFilterCount();
+
 todayApptTracker.addEventListener("click", () => {
   const filteredAppointments = todaysAppointments();
   renderAppointments(filteredAppointments);
