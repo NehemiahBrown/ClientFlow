@@ -70,20 +70,25 @@ function formatPhone(phone) {
 const createCard = function createCard(appointment) {
   const apptCard = document.createElement("div");
   const cardHeader = document.createElement("div");
+  const detailsSection = document.createElement("div");
+  const actionSection = document.createElement("div");
   const cardBtns = document.createElement("div");
-  apptCard.classList.add("appointmentCard");
+
   const date = new Date(appointment.dateTime);
   const formattedDated = date.toLocaleString("en-US");
   const deleteBtn = document.createElement("button");
   const editBtn = document.createElement("button");
 
-  apptCard.dataset.id = appointment.id;
   const name = document.createElement("p");
   const phone = document.createElement("p");
   const dateTime = document.createElement("p");
   const statusOptions = document.createElement("select");
 
+  apptCard.classList.add("appointmentCard");
+  apptCard.dataset.id = appointment.id;
   cardHeader.classList.add("card-header");
+  detailsSection.classList.add("details-section");
+  actionSection.classList.add("action-section");
   cardBtns.classList.add("card-btns");
   name.classList.add("apptName");
   phone.classList.add("apptPhone");
@@ -107,8 +112,10 @@ const createCard = function createCard(appointment) {
   <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
 </svg>`;
 
-  apptCard.append(cardHeader, dateTime, phone, statusOptions);
+  apptCard.append(cardHeader, detailsSection, actionSection);
   cardHeader.append(name, cardBtns);
+  detailsSection.append(dateTime, phone);
+  actionSection.append(statusOptions);
   cardBtns.append(editBtn, deleteBtn);
 
   statusColor(statusOptions);
@@ -125,10 +132,10 @@ const renderAppointments = function (appointmentArray) {
       apptCardContainer.append(createCard(appt));
     });
   } else {
-    const noMatchingApptsMessage = document.createElement("p");
-    noMatchingApptsMessage.classList.add("noMatchingApptsMessage");
-    noMatchingApptsMessage.textContent = "NO MATCHING APPOINTMENTS";
-    apptCardContainer.appendChild(noMatchingApptsMessage);
+    const noApptsMessage = document.createElement("p");
+    noApptsMessage.classList.add("noApptsMessage");
+    noApptsMessage.textContent = "NO APPOINTMENTS";
+    apptCardContainer.appendChild(noApptsMessage);
   }
 };
 
@@ -290,6 +297,7 @@ apptCardContainer.addEventListener("click", (e) => {
     const card = deleteBtn.closest(".appointmentCard");
     appointments = appointments.filter((appt) => appt.id !== card.dataset.id);
     localStorage.setItem("appointments", JSON.stringify(appointments));
+    updateCardFilterCount();
     renderAppointments(appointments);
   } else if (editBtn) {
     const card = editBtn.closest(".appointmentCard");
@@ -323,6 +331,7 @@ apptCardContainer.addEventListener("change", (e) => {
 if (savedAppointments) {
   appointments = savedAppointments;
   renderAppointments(appointments);
+  updateCardFilterCount();
 }
 
 todayApptTracker.addEventListener("click", () => {
