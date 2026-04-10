@@ -330,9 +330,9 @@ apptCardContainer.addEventListener("change", (e) => {
 // Initialization
 if (savedAppointments) {
   appointments = savedAppointments;
-  renderAppointments(appointments);
-  updateCardFilterCount();
 }
+renderAppointments(appointments);
+updateCardFilterCount();
 
 todayApptTracker.addEventListener("click", () => {
   const filteredAppointments = todaysAppointments();
