@@ -155,9 +155,34 @@ main {
 }
 
 @media (max-width: 600px) {
+  .searchBarAppt {
+    flex-direction: column;
+    align-items: flex-start;
+    margin: 0;
+  }
+  #searchBar {
+    width: 90%;
+    flex: none;
+  }
   #apptSummary {
     display: grid;
     grid-template-columns: 1fr 1fr;
+  }
+  #addApptForm {
+    width: 90%;
+    max-width: 400px;
+  }
+  .editApptBtn,
+  .deleteApptBtn {
+    height: 36px;
+    width: 36px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  .editApptBtn:active,
+  .deleteApptBtn:active {
+    transform: scale(0.97);
+    opacity: 0.9;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
   }
 }
 #todayApptTracker:hover,
@@ -324,6 +349,7 @@ main {
 
 #addApptForm {
   display: flex;
+  position: relative;
   flex-direction: column;
   background: var(--surface-color);
   border: 1px solid var(--border-color);
