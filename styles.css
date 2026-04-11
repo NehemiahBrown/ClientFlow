@@ -154,6 +154,12 @@ main {
   box-shadow: var(--shadow-soft);
 }
 
+@media (max-width: 600px) {
+  #apptSummary {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+}
 #todayApptTracker:hover,
 #upcomingApptTracker:hover,
 #completedApptTracker:hover,
@@ -317,7 +323,6 @@ main {
 }
 
 #addApptForm {
-  position: fixed;
   display: flex;
   flex-direction: column;
   background: var(--surface-color);
