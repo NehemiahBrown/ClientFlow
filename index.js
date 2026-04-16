@@ -363,6 +363,8 @@ apptCardContainer.addEventListener("change", (e) => {
 if (savedAppointments) {
   appointments = savedAppointments;
 }
+renderAppointments(appointments);
+updateCardFilterCount();
 
 todayApptTracker.addEventListener("click", () => {
   activeFilter = "today";
