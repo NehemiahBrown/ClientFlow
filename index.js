@@ -29,6 +29,7 @@ const noMatchingAppts = document.getElementById("noMatchingAppts");
 let savedAppointments = JSON.parse(localStorage.getItem("appointments"));
 
 let editingApptId = null;
+let activeFilter = "all";
 
 //filter buttons
 const todayApptTracker = document.getElementById("todayApptTracker");
@@ -44,11 +45,11 @@ const allApptCount = document.getElementById("allApptCount");
 
 const statusColor = function statusColor(options) {
   const color =
-    options.value == "scheduled"
+    options.value === "scheduled"
       ? (options.style.background = "rgba(74, 144, 226, 0.14)")
-      : options.value == "completed"
+      : options.value === "completed"
         ? (options.style.background = "rgba(47, 158, 114, 0.14)")
-        : options.value == "canceled"
+        : options.value === "canceled"
           ? (options.style.background = "rgba(217, 92, 92, 0.14)")
           : (options.style.background = "#000");
 
@@ -149,7 +150,10 @@ function todaysAppointments() {
 function upcomingAppointments() {
   const today = new Date();
   return appointments.filter((appointment) => {
-    return new Date(appointment.dateTime) > today;
+    return (
+      new Date(appointment.dateTime) > today &&
+      appointment.status == "scheduled"
+    );
   });
 }
 
@@ -163,6 +167,44 @@ function completedAppointments() {
   });
 }
 
+function activeFilterStyling() {
+  let activeFilterCard = document.querySelectorAll("#apptSummary div");
+
+  activeFilterCard.forEach((div) => {
+    div.classList.remove("active-tracker");
+  });
+}
+
+function getFilteredAppointments() {
+  if (activeFilter === "today") {
+    return todaysAppointments();
+  }
+
+  if (activeFilter === "upcoming") {
+    return upcomingAppointments();
+  }
+
+  if (activeFilter === "completed") {
+    return completedAppointments();
+  }
+
+  return appointments;
+}
+
+function updateVisibleAppointments() {
+  const inputValue = searchBar.value.trim().toLowerCase();
+
+  let visibleAppointments = getFilteredAppointments();
+
+  if (inputValue !== "") {
+    visibleAppointments = visibleAppointments.filter((appointment) => {
+      return appointment.name.toLowerCase().includes(inputValue);
+    });
+  }
+
+  renderAppointments(visibleAppointments);
+}
+
 function updateCardFilterCount() {
   todayApptCount.innerText = appointments.filter((appointment) => {
     return (
@@ -172,7 +214,10 @@ function updateCardFilterCount() {
   }).length;
 
   upcomingApptCount.innerText = appointments.filter((appointment) => {
-    return new Date(appointment.dateTime) > new Date();
+    return (
+      new Date(appointment.dateTime) > new Date() &&
+      appointment.status === "scheduled"
+    );
   }).length;
 
   completedApptCount.innerText = appointments.filter((appointment) => {
@@ -227,20 +272,7 @@ const validateForm = function (form) {
 // Event Listeners
 
 searchBar.addEventListener("input", function () {
-  const inputValue = this.value.trim().toLowerCase();
-  const filteredArray = appointments.filter((appointment) => {
-    return appointment.name.toLowerCase().includes(inputValue);
-  });
-  if (inputValue === "") {
-    renderAppointments(appointments);
-    noMatchingAppts.style.display = "none";
-  } else if (filteredArray.length > 0) {
-    renderAppointments(filteredArray);
-    noMatchingAppts.style.display = "none";
-  } else {
-    apptCardContainer.innerHTML = "";
-    renderAppointments(filteredArray);
-  }
+  updateVisibleAppointments();
 });
 
 addApptBtn.addEventListener("click", () => {
@@ -265,7 +297,7 @@ apptForm.addEventListener("submit", (e) => {
     const newAppointment = createAppointment(e.target);
     appointments.push(newAppointment);
     localStorage.setItem("appointments", JSON.stringify(appointments));
-    renderAppointments(appointments);
+    updateVisibleAppointments();
     updateCardFilterCount();
     e.target.reset();
     apptFormCont.classList.remove("showForm");
@@ -281,7 +313,7 @@ apptForm.addEventListener("submit", (e) => {
     editedAppointment.dateTime = e.target.elements["dateTime"].value;
 
     localStorage.setItem("appointments", JSON.stringify(appointments));
-    renderAppointments(appointments);
+    updateVisibleAppointments();
     updateCardFilterCount();
     e.target.reset();
     apptFormCont.classList.remove("showForm");
@@ -298,7 +330,7 @@ apptCardContainer.addEventListener("click", (e) => {
     appointments = appointments.filter((appt) => appt.id !== card.dataset.id);
     localStorage.setItem("appointments", JSON.stringify(appointments));
     updateCardFilterCount();
-    renderAppointments(appointments);
+    updateVisibleAppointments();
   } else if (editBtn) {
     const card = editBtn.closest(".appointmentCard");
     const id = card.dataset.id;
@@ -334,24 +366,30 @@ if (savedAppointments) {
 renderAppointments(appointments);
 updateCardFilterCount();
 
-renderAppointments(appointments);
-updateCardFilterCount();
-
 todayApptTracker.addEventListener("click", () => {
-  const filteredAppointments = todaysAppointments();
-  renderAppointments(filteredAppointments);
+  activeFilter = "today";
+  updateVisibleAppointments();
+  activeFilterStyling();
+  todayApptTracker.classList.add("active-tracker");
 });
 
 allApptTracker.addEventListener("click", () => {
-  renderAppointments(appointments);
+  activeFilter = "all";
+  updateVisibleAppointments();
+  activeFilterStyling();
+  allApptTracker.classList.add("active-tracker");
 });
 
 upcomingApptTracker.addEventListener("click", () => {
-  const filteredAppointments = upcomingAppointments();
-  renderAppointments(filteredAppointments);
+  activeFilter = "upcoming";
+  updateVisibleAppointments();
+  activeFilterStyling();
+  upcomingApptTracker.classList.add("active-tracker");
 });
 
 completedApptTracker.addEventListener("click", () => {
-  const filteredAppointments = completedAppointments();
-  renderAppointments(filteredAppointments);
+  activeFilter = "completed";
+  updateVisibleAppointments();
+  activeFilterStyling();
+  completedApptTracker.classList.add("active-tracker");
 });

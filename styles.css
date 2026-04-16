@@ -136,10 +136,10 @@ main {
   margin: 0px;
 }
 
-#todayApptTracker,
-#upcomingApptTracker,
-#completedApptTracker,
-#allApptTracker {
+.todayApptTracker,
+.upcomingApptTracker,
+.completedApptTracker,
+.allApptTracker {
   display: flex;
   max-width: 300px;
   gap: 30px;
@@ -154,51 +154,30 @@ main {
   box-shadow: var(--shadow-soft);
 }
 
-@media (max-width: 600px) {
-  .searchBarAppt {
-    flex-direction: column;
-    align-items: flex-start;
-    margin: 0;
-  }
-  #searchBar {
-    width: 90%;
-    flex: none;
-  }
-  #apptSummary {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-  }
-  #addApptForm {
-    width: 90%;
-    max-width: 400px;
-  }
-  .editApptBtn,
-  .deleteApptBtn {
-    height: 36px;
-    width: 36px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-  .editApptBtn:active,
-  .deleteApptBtn:active {
-    transform: scale(0.97);
-    opacity: 0.9;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-  }
-}
-#todayApptTracker:hover,
-#upcomingApptTracker:hover,
-#completedApptTracker:hover,
-#allApptTracker:hover {
+.todayApptTracker:hover,
+.upcomingApptTracker:hover,
+.completedApptTracker:hover,
+.allApptTracker:hover {
   background: var(--surface-color);
   box-shadow: var(--shadow-hover);
   cursor: pointer;
   transition: ease-in 0.2s;
 }
 
+.todayApptTracker.active-tracker:hover,
+.upcomingApptTracker.active-tracker:hover,
+.completedApptTracker.active-tracker:hover,
+.allApptTracker.active-tracker:hover {
+  background: var(--surface-color);
+  box-shadow: var(--shadow-hover);
+  cursor: pointer;
+  transition: ease-in 0.2s;
+  color: black;
+}
 .active-tracker {
-  background: var(--accent-soft);
-  color: var(--scheduled);
-  border: 1px solid rgba(74, 144, 226, 0.2);
+  background: var(--primary-color);
+  color: var(--surface-color);
+  border: 1px solid var(--border-strong);
 }
 
 /* appointment cards */
@@ -209,13 +188,14 @@ main {
   justify-content: center;
   gap: 18px;
   margin: 60px 0px;
+  min-height: 50vh;
 }
 
 .appointmentCard {
   position: relative;
   max-width: 360px;
   min-width: 290px;
-  min-height: 220px;
+  max-height: 220px;
   padding: 24px 30px 16px 30px;
   display: flex;
   flex-direction: column;
@@ -430,11 +410,44 @@ main {
 
 .noApptsMessage {
   position: absolute;
-  font-size: 90px;
+  font-size: clamp(40px, 8vw, 130px);
   text-align: center;
   line-height: 1.3;
-  inset: 0;
-  margin: auto;
-  max-width: 800px;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  transform: translateY(-50%);
   opacity: 0.5;
+}
+
+@media (max-width: 600px) {
+  .searchBarAppt {
+    flex-direction: column;
+    align-items: flex-start;
+    margin: 0;
+  }
+  #searchBar {
+    width: 90%;
+    flex: none;
+  }
+  #apptSummary {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+  #addApptForm {
+    width: 90%;
+    max-width: 400px;
+  }
+  .editApptBtn,
+  .deleteApptBtn {
+    height: 36px;
+    width: 36px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  .editApptBtn:active,
+  .deleteApptBtn:active {
+    transform: scale(0.97);
+    opacity: 0.9;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  }
 }
