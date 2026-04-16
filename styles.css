@@ -293,18 +293,19 @@ main {
   opacity: 0.7;
   background-color: #9ca3af;
   transition: all 0.2s ease;
+  color: black;
 }
 
 .deleteApptBtn:hover {
   color: var(--canceled);
-  background: var(--canceled-soft);
+  background-color: rgba(217, 92, 92, 0.14);
   border-radius: var(--radius-sm);
   transition: ease-in 0.2s;
 }
 
 .editApptBtn:hover {
   color: var(--accent-color);
-  background: var(--accent-soft);
+  background-color: rgba(74, 144, 226, 0.14);
   border-radius: var(--radius-sm);
   transition: ease-in 0.2s;
 }
@@ -347,23 +348,28 @@ main {
   padding: 2.5px 5px;
 
   font-weight: bold;
-  font-size: 20px;
+  font-size: 24px;
 
   background: none;
-  border: 1px solid var(--primary-color);
-  border-radius: 6px;
+  color: var(--canceled);
+  border: none;
 
   cursor: pointer;
 }
 
 #addApptForm h1 {
-  margin-bottom: 40px;
+  margin-bottom: 50px;
+  font-weight: bolder;
 }
 
 #addApptForm div,
 #addApptForm label {
   font-weight: 600;
-  margin: 20px 0px 10px 0px;
+  margin: 5px 0px 10px 0px;
+}
+
+#addApptForm label {
+  display: block;
 }
 
 #addApptForm div,
@@ -379,6 +385,8 @@ main {
   width: 250px;
   height: 30px;
   padding-left: 4px;
+  border-radius: 5px;
+  border: 1px solid rgba(0, 0, 0, 0.3);
 }
 
 #addApptForm input:focus {
@@ -390,11 +398,18 @@ main {
 
 #submitApptBtn {
   position: absolute;
-  width: 100px;
-  height: 30px;
+  width: 130px;
+  height: 38px;
   bottom: 15px;
   right: 20px;
   display: block;
+  background-color: var(--accent-color);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 5px 10px;
 }
 
 .phoneErrorMsg,
